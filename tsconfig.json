@@ -1,0 +1,16 @@
+{
+"compilerOptions": {
+    "target": "ES2021",
+    "module": "CommonJS",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "rootDir": "./api"
+  },
+  "include": ["api", "persistence", "entities", "utils"]
+}
