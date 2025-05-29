@@ -24,5 +24,19 @@ export const levelsRepository = {
             console.error('Error al obtener los niveles:', err);
             throw new Error('Error al obtener los niveles');
         }
+    },
+
+    async findByDamId(damId: number) {
+        try {
+            const levels = await levelRepo.find({
+                where: { damId },
+                order: { timestamp: 'DESC' },
+                take: 2,
+            });
+            return levels;
+        } catch (err: any) {
+            console.error('Error al obtener los niveles por ID de presa:', err);
+            throw new Error('Error al obtener los niveles por ID de presa');
+        }
     }
 };

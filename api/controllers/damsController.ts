@@ -17,6 +17,16 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
+router.get('/fill-percentage', async (req: Request, res: Response) => {
+  try {
+    const fillPercentage = await damService.fillPercentage();
+    res.json(ResponseFactory.success(fillPercentage));
+  }catch (err: any) {
+    console.error('Error en GET /dams/info:', err);
+    res.status(500).json(ResponseFactory.error(null, 'Error al obtener información de las presas'));
+  }
+});
+
 router.post('/create', passwordAuth , async (req: Request, res: Response) => {
   try {
     const { name, location, capacity, currentLevel, constructionDate } = req.body;
