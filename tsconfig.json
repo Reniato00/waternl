@@ -1,5 +1,6 @@
 {
 "compilerOptions": {
+    "types": ["node", "jest"],
     "target": "ES2021",
     "module": "CommonJS",
     "experimentalDecorators": true,
@@ -12,5 +13,5 @@
     "outDir": "./dist",
     "rootDir": "./api"
   },
-  "include": ["api", "persistence", "entities", "utils"]
+  "include": ["api", "persistence", "entities", "utils", "api/tests"]
 }
