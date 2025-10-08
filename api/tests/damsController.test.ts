@@ -64,4 +64,43 @@ describe("Dams API", () => {
             expect(consoleErrorSpy).toHaveBeenCalled();
         });
     });
+
+    describe("POST /create", () => {
+        it("Should create a new dam", async() =>{
+            const newDam = { name: "Dam B", location: "Loc B", capacity: 1000, currentLevel: 500, constructionDate: "2020-01-01" };
+            const createdDam = { id: 2, ...newDam };
+            (damService.createDam as jest.Mock).mockResolvedValue(createdDam);
+            const res = await request(app).post("/create").send(newDam);
+            expect(res.status).toBe(200);
+            expect(res.body).toEqual(ResponseFactory.created(createdDam));
+            expect(damService.createDam).toHaveBeenCalledWith(newDam.name, newDam.location, newDam.capacity, newDam.currentLevel, newDam.constructionDate);
+        });
+
+        it("Should handle errors", async() => {
+            (damService.createDam as jest.Mock).mockRejectedValue(new Error("fail"));
+            const res = await request(app).post("/create").send({ name: "Dam B" });
+            expect(res.status).toBe(500);
+            expect(res.body).toEqual(ResponseFactory.error(null, "Error al crear la presa"));
+            expect(consoleErrorSpy).toHaveBeenCalled();
+        });
+    });
+
+    describe("PUT /update/:id", () => {
+        it("Should update an existing dam", async() =>{
+            const updatedDam = { id: 1, name: "Dam A Updated", location: "Loc A", capacity: 1200, currentLevel: 600, constructionDate: "2019-01-01" };
+            (damService.updateDam as jest.Mock).mockResolvedValue(updatedDam);
+            const res = await request(app).put("/update/1").send({ name: "Dam A Updated", location: "Loc A", capacity: 1200, currentLevel: 600, constructionDate: "2019-01-01" });
+            expect(res.status).toBe(200);
+            expect(res.body).toEqual(ResponseFactory.success(updatedDam));
+            expect(damService.updateDam).toHaveBeenCalledWith(1, updatedDam.name, updatedDam.location, updatedDam.capacity, updatedDam.currentLevel, updatedDam.constructionDate);
+        });
+
+        it("Should handle errors", async() => {
+            (damService.updateDam as jest.Mock).mockRejectedValue(new Error("fail"));
+            const res = await request(app).put("/update/1").send({ name: "Dam A Updated" });
+            expect(res.status).toBe(500);
+            expect(res.body).toEqual(ResponseFactory.error(null, "Error al actualizar la presa"));
+            expect(consoleErrorSpy).toHaveBeenCalled();
+        });
+    });
 });
